@@ -20,11 +20,34 @@ void printoutcontents(string, string, int, string, int);
 int makeNameRecord(string state[], string gender[], int year[], string name[], int count[])
 {
     // TODO: open "babyname.txt", read each line into the parallel arrays,
+    ifstream read("babyname.txt");
+
+    if (!read.is_open()){
+        cerr << "Error: could not open babyname.txt";
+        exit(1);
+    }
+    int cnt = 0;
+    while (read >> state[cnt] >> gender[cnt] >> year[cnt] >> name[cnt] >> count[cnt]){
+        cnt++;
+    }
+    read.close();
+    return cnt;
 }
 
 int findNames(int cnt, string state[], string gender[], int year[], string name[], int count[], char starting, string stname)
 {
     // TODO: print each record where the state matches `stname` and the name
+    int m_cnt = 0;
+    for (int i=0;i<cnt;i++){
+        if (state[i] == stname){
+            if(name[i].rfind(starting, 0) == 0){
+                printoutcontents(state[i], gender[i], year[i], name[i], count[i]);
+                m_cnt++;
+            }
+        }
+    }
+    return m_cnt;
+
 }
 
 void printoutallrecords(int cnt, string state[], string gender[], int year[], string name[], int count[])
